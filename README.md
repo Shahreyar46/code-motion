@@ -79,6 +79,28 @@ You can also just ask in plain words ("make a tutorial video showing how to conn
 
 **Full documentation: [GUIDE.md](GUIDE.md)**: workflow, styles, formats, voice, sound, content rules, tutorials, editing, troubleshooting.
 
+## Works everywhere + scheduled videos
+
+Code Motion runs anywhere **Claude Code** runs: the **Desktop app (Code tab)**, **VS Code / JetBrains**, the **terminal**, and **Claude Code on the web** (claude.ai/code). Not in plain Claude.ai chat.
+
+**Load it automatically in a project** (web, desktop, teammates): run `/code-motion:setup` and accept adding the plugin to the project's `.claude/settings.json`, or add it yourself and commit:
+```json
+{
+  "extraKnownMarketplaces": { "code-motion": { "source": { "source": "github", "repo": "Shahreyar46/code-motion" } } },
+  "enabledPlugins": { "code-motion@code-motion": true }
+}
+```
+
+**Check any machine** (new PC, cloud environment): `python <plugin>/skills/code-motion/scripts/doctor.py --fix` prints PASS/FAIL for Node, Python, ffmpeg, headless Chromium, voice and network, tries automatic fixes, and estimates render time.
+
+**Schedule videos with your computer off:**
+1. In your project: `/code-motion:setup --schedule`. Answer the questions once; it writes `video/brief.md` (product, brand, voice, formats, rules) and `video/queue.md` (upcoming video topics), commits them and the project settings.
+2. On **claude.ai/code** → your repo's project → **Scheduled** → new schedule → prompt `/code-motion:video --unattended` → pick the time (e.g. every Monday 09:00).
+3. Each run: sets up the cloud machine, takes the next `- [ ]` item from `video/queue.md`, makes the video without asking questions (AI chooses style and a fresh format, stricter self-review), and **pushes it to a `videos/<date>-<slug>` branch** (plus a pull request when possible) with captions and notes. Tick list and history are updated automatically.
+4. Add topics to `video/queue.md` any time; empty queue → it makes a video about your latest changes.
+
+Premium voice in the cloud: add `GEMINI_API_KEY` (or `ELEVENLABS_API_KEY`) to the cloud environment's variables/secrets, not to the repo.
+
 ## Content rules
 Male voice only · no music unless you ask (`--music`) · no images of women or girls · no haram products or themes · nature and animal imagery, your real UI and code-drawn visuals · free-licence or generated images only, with sources logged · no invented numbers or testimonials.
 

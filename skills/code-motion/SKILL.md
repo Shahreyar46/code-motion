@@ -32,6 +32,10 @@ Why this works for an agent: the page is deterministic, so you can look at any f
 | 3D scene starter | `templates/three-scene.html` |
 | One-shape UI morph loop to copy from (button → loader → check → toggle → card, cursor-driven) | `templates/ui-morph.html` |
 
+## Unattended / scheduled runs
+
+If the request contains `--unattended`, or this is a scheduled task/routine with nobody to answer, follow `references/unattended.md` instead of asking questions: brief from `video/brief.md`, topic from `video/queue.md`, AI picks style and format, storyboard goes into NOTES.md, stricter self-review, and the finished video is committed to a `videos/…` branch so the user gets it even with their machine off. Unsure whether this machine can render (cloud, new PC)? Run `python $SKILL/scripts/doctor.py --fix` first.
+
 ## Content & audio rules (always)
 
 Read `references/content-policy.md` once per video. In short: **male voice only**; **no music** unless the user asks (`--music`); **no images of women or girls**; **no haram products or themes**; prefer nature and animal imagery, the product's real UI and code-drawn visuals; external photos only from free-licence sources (Unsplash, Pexels, Wikimedia Commons) or generated, never random Google Images results; log every image source in `NOTES.md`.

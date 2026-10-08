@@ -6,6 +6,8 @@ Make a video with the code-motion skill. Skill folder: `${CLAUDE_PLUGIN_ROOT}/sk
 
 Request: $ARGUMENTS
 
+0. If the request contains `--unattended` (or this is a scheduled run with nobody to answer): follow `${CLAUDE_PLUGIN_ROOT}/skills/code-motion/references/unattended.md`. Take the topic and type from `video/queue.md` (first unchecked item) and the brief from `video/brief.md`, then continue below without asking any questions.
+
 1. Classify the request into one type and read that type's preset file (all in `${CLAUDE_PLUGIN_ROOT}/commands/`) before anything else:
    promo/launch/ad → `${CLAUDE_PLUGIN_ROOT}/commands/promo.md` · product overview (what it is + feature tour) → `commands/overview.md` · tutorial/docs/how-to → `commands/tutorial.md` · product demo/walkthrough → `commands/demo.md` · concept/feature-update explainer → `commands/explainer.md` · vertical social reel/short → `commands/reel.md` · UI animation loop → `commands/ui-loop.md` · logo reveal/intro/outro → `commands/logo.md` · 3D scene → `commands/scene-3d.md`.
    If it's ambiguous, ask once which type, offering the two most likely.

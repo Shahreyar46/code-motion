@@ -18,6 +18,7 @@ Everything you need to make professional videos with Claude Code: installation, 
 13. Tutorial / docs videos
 14. Vertical videos (Reels, TikTok, Shorts)
 15. Editing a video after it's made
+15b. Where it runs, and scheduled videos
 16. Render times and quality
 17. Getting the best results
 18. Output files
@@ -235,6 +236,28 @@ Just ask in the same project:
 - Format: "make a 15-second cut", "make a square version".
 
 The editable master is `video/src/` + `video/src/script.json`. Developers can edit the HTML directly; every frame is `seek(t)`.
+
+## 15b. Where it runs, and scheduled videos (machine off)
+
+Code Motion runs anywhere **Claude Code** runs: the **Desktop app (Code tab)**, **VS Code / JetBrains**, the **terminal**, and **Claude Code on the web** (claude.ai/code). Not in plain Claude.ai chat.
+
+**Load it automatically in a project** (web, desktop, teammates): run `/code-motion:setup` and accept adding the plugin to the project's `.claude/settings.json`, or add it yourself and commit:
+```json
+{
+  "extraKnownMarketplaces": { "code-motion": { "source": { "source": "github", "repo": "Shahreyar46/code-motion" } } },
+  "enabledPlugins": { "code-motion@code-motion": true }
+}
+```
+
+**Check any machine** (new PC, cloud environment): `python <plugin>/skills/code-motion/scripts/doctor.py --fix` prints PASS/FAIL for Node, Python, ffmpeg, headless Chromium, voice and network, tries automatic fixes, and estimates render time.
+
+**Schedule videos with your computer off:**
+1. In your project: `/code-motion:setup --schedule`. Answer the questions once; it writes `video/brief.md` (product, brand, voice, formats, rules) and `video/queue.md` (upcoming video topics), commits them and the project settings.
+2. On **claude.ai/code** → your repo's project → **Scheduled** → new schedule → prompt `/code-motion:video --unattended` → pick the time (e.g. every Monday 09:00).
+3. Each run: sets up the cloud machine, takes the next `- [ ]` item from `video/queue.md`, makes the video without asking questions (AI chooses style and a fresh format, stricter self-review), and **pushes it to a `videos/<date>-<slug>` branch** (plus a pull request when possible) with captions and notes. Tick list and history are updated automatically.
+4. Add topics to `video/queue.md` any time; empty queue → it makes a video about your latest changes.
+
+Premium voice in the cloud: add `GEMINI_API_KEY` (or `ELEVENLABS_API_KEY`) to the cloud environment's variables/secrets, not to the repo.
 
 ## 16. Render times and quality
 
