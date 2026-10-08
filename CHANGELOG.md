@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.1 (2026-10-09)
+- Docs: install from Claude Code or terminal
+- how to turn on auto-update (UI or settings.json)
+- uninstall
+
 ## v1.0.0 (2026-10-09)
 - First release: code-motion skill (engine, voice, sound effects, mastering, captions), 4 templates, references built from professional video breakdowns.
 - Commands: setup, promo, overview, demo, tutorial, explainer, reel, ui-loop, logo, scene-3d, video.
