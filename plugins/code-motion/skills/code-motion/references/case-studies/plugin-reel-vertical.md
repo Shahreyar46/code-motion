@@ -1,6 +1,6 @@
 # WooCommerce plugin promo reel, vertical 9:16 (55 s, 60 fps, 1 hard cut)
 
-ArchiveMaster (Woo order archiver) as a meme-then-solution reel, ~3.5-5 s per idea.
+A WooCommerce order-archiving plugin promoted as a meme-then-solution reel, ~3.5-5 s per idea.
 
 ## Arc
 - 0-7 pain meme: fake wp-admin browser, caption "Me: opening the Orders page" → "Still loading..." → "Seriously?!" + "Page Unresponsive" dialog.

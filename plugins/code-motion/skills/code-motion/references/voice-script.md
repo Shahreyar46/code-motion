@@ -21,11 +21,11 @@
   "lead_in": 0.6, "gap": 0.4,
   "lines": [
     {"id": "hook", "text": "Your orders page shouldn't take a coffee break.", "pause": 0.5},
-    {"id": "meet", "text": "Meet ArchiveMaster."}
+    {"id": "meet", "text": "Meet YourPlugin."}
   ]
 }
 ```
-IDs are what the page anchors to (`M.line('meet').start`, `M.word('meet','ArchiveMaster')`), so keep them stable when editing text.
+IDs are what the page anchors to (`M.line('meet').start`, `M.word('meet','YourPlugin')`), so keep them stable when editing text.
 
 ## Choosing the voice (male, natural)
 
