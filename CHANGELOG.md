@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.4 (2026-10-09)
+- Examples and case studies now use generic names only
+
 ## v1.1.3 (2026-10-09)
 - Male voice now enforced on the audio itself: pitch check in voice.py and the final mix refuses female-sounding narration from any source (including old recordings)
 - default Gemini voice Charon
