@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.1 (2026-10-09)
+- Standard marketplace layout so the plugin shows up in claude.ai Customize → Plugins
+- skill zip attached to every release for claude.ai upload
+
 ## v1.1.0 (2026-10-09)
 - Scheduled videos with your machine off (Claude Code on the web): --unattended mode, brief.md + queue.md, results pushed to a videos branch
 - /code-motion:setup --schedule
