@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "code-motion",
-      "source": "./",
+      "source": "./plugins/code-motion",
       "description": "AI video studio: promos, tutorials, demos, explainers, reels and more, rendered from code with voiceover and sound design."
     }
   ]

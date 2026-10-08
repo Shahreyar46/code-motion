@@ -126,13 +126,13 @@ See **Turn on auto-update** above. What changed: [CHANGELOG.md](CHANGELOG.md) / 
 - Render time: roughly 5-10 minutes for a 30s video at 60fps with motion blur.
 
 ## What's inside
-- `skills/code-motion/`: the skill: engine (`motion.js`, build, render, stills, preview server), scripts (voice, sound effects, mastering), references (pro techniques, styles, video types, sound design, voice, prompt patterns, case studies) and templates.
-- `commands/`: the type presets above.
+- `plugins/code-motion/skills/code-motion/`: the skill: engine (`motion.js`, build, render, stills, preview server), scripts (voice, sound effects, mastering), references (pro techniques, styles, video types, sound design, voice, prompt patterns, case studies) and templates.
+- `plugins/code-motion/commands/`: the type presets above.
 
-Licence: MIT. Bundled fonts: SIL OFL 1.1. See `skills/code-motion/THIRD_PARTY.md`.
+Licence: MIT. Bundled fonts: SIL OFL 1.1. See `plugins/code-motion/skills/code-motion/THIRD_PARTY.md`.
 
 ## For maintainers: releasing
 ```
 ./release.sh 1.1.0 "Added X; fixed Y"
 ```
-Bumps the version in `.claude-plugin/plugin.json`, adds a CHANGELOG entry, validates, commits, tags `v1.1.0` and pushes. The GitHub Action checks the tag matches the version and publishes the Release. Pushing to `main` without a new version does **not** update users: Claude Code updates by version number.
+Bumps the version in `plugins/code-motion/.claude-plugin/plugin.json`, adds a CHANGELOG entry, validates, commits, tags `v1.1.0` and pushes. The GitHub Action checks the tag matches the version and publishes the Release. Pushing to `main` without a new version does **not** update users: Claude Code updates by version number.
