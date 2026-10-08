@@ -4,14 +4,46 @@ Make professional motion-graphics videos by asking Claude: product promos, launc
 
 ## Install
 
-In Claude Code:
+Pick **one** way. All need [Claude Code](https://claude.com/claude-code).
 
+**A. Inside Claude Code** (type in the chat box):
 ```
 /plugin marketplace add Shahreyar46/code-motion
 /plugin install code-motion@code-motion
 ```
 
-Then, in the project where you want to make videos:
+**B. From a terminal (CLI):**
+```
+claude plugin marketplace add Shahreyar46/code-motion
+claude plugin install code-motion@code-motion
+```
+
+Then restart Claude Code (or run `/reload-plugins`) and type `/code-motion:` to see the commands.
+
+### Turn on auto-update (recommended)
+Auto-update is **off by default** for every marketplace that isn't Anthropic's own; plugin authors can't change that, so each user switches it on once:
+- **In Claude Code:** `/plugin` → **Marketplaces** tab → **code-motion** → **Enable auto-update**.
+- **Or in settings** (`~/.claude/settings.json`, merge with what's there). This also registers the marketplace, so then just run the install command:
+  ```json
+  {
+    "extraKnownMarketplaces": {
+      "code-motion": {
+        "source": { "source": "github", "repo": "Shahreyar46/code-motion" },
+        "autoUpdate": true
+      }
+    }
+  }
+  ```
+With auto-update on, Claude Code checks for new releases in the background a few minutes into a session; the new version loads on the next start (or `/reload-plugins`).
+Manual update any time: `/plugin marketplace update code-motion` (CLI: `claude plugin marketplace update code-motion`).
+Note: `DISABLE_AUTOUPDATER=1` or `DISABLE_UPDATES=1` in your environment also stops plugin updates unless you set `FORCE_AUTOUPDATE_PLUGINS=1`.
+
+### Uninstall
+`/plugin uninstall code-motion@code-motion` (CLI: `claude plugin uninstall code-motion@code-motion`).
+
+## First-time setup in a project
+
+In the project where you want to make videos:
 
 ```
 /code-motion:setup
@@ -62,10 +94,7 @@ or `ELEVENLABS_API_KEY`. Male voices only. Offline fallback on Windows: the buil
 
 ## Updating
 
-New versions are published as GitHub releases (tags like `v1.1.0`).
-- **Automatic (recommended, set once):** run `/plugin`, open **Marketplaces**, select **code-motion** and enable **auto-update**. Claude Code then installs new releases when it starts.
-- **Manual:** `/plugin marketplace update code-motion`, then restart Claude Code or run `/reload-plugins`.
-- See what changed: [CHANGELOG.md](CHANGELOG.md) or the GitHub Releases page.
+See **Turn on auto-update** above. What changed: [CHANGELOG.md](CHANGELOG.md) / GitHub Releases.
 
 ## Tips for the best results
 - Use a strong model with high effort (e.g. Opus on high or max).
