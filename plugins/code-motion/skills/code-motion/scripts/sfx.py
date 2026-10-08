@@ -226,6 +226,10 @@ def load_music(spec, n, tmpdir):
 def cmd_mix(a):
     if a.cues and not pathlib.Path(a.cues).exists(): raise SystemExit(f'cues file not found: {a.cues} (render.js writes <out>.cues.json)')
     cues = json.loads(pathlib.Path(a.cues).read_text(encoding='utf-8')) if a.cues else []
+    if a.vo:   # male-voice gate: applies to ANY narration file, including pre-recorded takes
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent)); import voicecheck
+        code, f0, _ = voicecheck.check(a.vo)
+        if code == 3: raise SystemExit(f'REFUSED: {a.vo} sounds female (median pitch {f0:.0f} Hz). This plugin uses male narration only; regenerate the voice with a male voice.')
     vo = read_wav(a.vo) if a.vo else np.zeros((0, 2), np.float32)
     rendered = [render_cue(c, i) for i, c in enumerate(sorted(cues, key=lambda c: c['t']))]
     end = max([len(vo) / SR, a.dur or 0] + [s + len(x) / SR for s, x in rendered]) + 0.3

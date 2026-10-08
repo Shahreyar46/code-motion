@@ -8,6 +8,7 @@ These rules apply to every video unless a rule says how the user can change it. 
   - their own track: `--music path/to/track.mp3` (they confirm they have the rights), or
   - a generated soft ambient bed: `python sfx.py mix … --music synth` (no licence issues).
   - Music sits ~18 dB under the voice and ducks further while words are spoken (`--music-db`).
+- **Male voice only, checked on the audio itself.** `scripts/voicecheck.py` measures the narration's pitch (male about 85-155 Hz, female about 165-255 Hz); `voice.py` and `sfx.py mix` refuse female-sounding audio automatically. Never use narration audio from anywhere else (old takes, kits, uploads, other tools) without passing it through `sfx.py mix --vo` or `voicecheck.py` first. A voice *name* being on a male list is not enough.
 - **Male voice only.** Use only the male voices listed by `voice.py --list`; `voice.py` refuses voices it can identify as female. If a user asks for a female voice, say this plugin offers male narration only and suggest a male voice with a similar tone.
 
 ## Imagery

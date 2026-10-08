@@ -253,6 +253,13 @@ def main():
     vo = np.concatenate(chunks)
     peak = np.abs(vo).max() or 1; vo = vo / peak * 0.89  # -1 dBFS peak; final loudness is set at mux
     write_wav(out / 'vo.wav', vo)
+    # male-voice gate on the real audio (catches female-sounding voices whatever their name or source)
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent)); import voicecheck
+    code, f0, _ = voicecheck.check(out / 'vo.wav')
+    if code == 3:
+        (out / 'vo.wav').rename(out / 'vo.REFUSED-female.wav')
+        sys.exit(f'REFUSED: the narration sounds female (median pitch {f0:.0f} Hz). Male voice only: pick another male voice (python voice.py --list) and run again.')
+    if f0: print(f'voice check: male, median pitch {f0:.0f} Hz')
     T = {'duration': round(len(vo) / SR, 3), 'providers': sorted(used), 'lines': timeline}
     (out / 'timings.json').write_text(json.dumps(T, indent=1, ensure_ascii=False), encoding='utf-8')
     print(f'vo.wav {T["duration"]}s, {len(timeline)} lines via {", ".join(sorted(used))} -> {out / "timings.json"}')

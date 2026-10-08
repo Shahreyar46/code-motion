@@ -1,7 +1,7 @@
 {
   "voice": {
     "provider": "auto",
-    "gemini": "Achird",
+    "gemini": "Charon",
     "edge": "en-US-AndrewNeural",
     "rate": "-2%",
     "style": "Friendly, upbeat SaaS narrator. Natural and warm, like explaining to a teammate. Smile on the product name."

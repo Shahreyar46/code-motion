@@ -31,7 +31,7 @@ IDs are what the page anchors to (`M.line('meet').start`, `M.word('meet','Archiv
 
 | Provider | Needs | Voice suggestions | Notes |
 |---|---|---|---|
-| Gemini TTS | `GEMINI_API_KEY` | Charon (informative), Orus (firm), Iapetus (clear), Algenib (gravelly), Achird (friendly), Puck (upbeat) | Most natural; obeys `style` direction. Word times are estimated (±0.15 s). Model via `CM_GEMINI_TTS_MODEL`. |
+| Gemini TTS | `GEMINI_API_KEY` | **Charon** (informative, default), Orus (firm), Iapetus (clear), Algenib (gravelly), Fenrir (excitable), Puck (upbeat). Some Gemini voices can sound light/higher; the pitch gate refuses them, so pick a deeper one | Most natural; obeys `style` direction. Word times are estimated (±0.15 s). Model via `CM_GEMINI_TTS_MODEL`. |
 | ElevenLabs | `ELEVENLABS_API_KEY` | Adam `pNInz6obpgDQGcFmaJgB`, Josh, Antoni | Very natural, real timestamps, paid. |
 | edge-tts | internet | **en-US-AndrewNeural** (warm, default), BrianNeural (casual), GuyNeural (news), ChristopherNeural (authoritative), en-GB-RyanNeural | Free, natural, real word timestamps. `rate` like `"-4%"`. |
 | SAPI | Windows | Microsoft David | Offline, robotic; last resort. |

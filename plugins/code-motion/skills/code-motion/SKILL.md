@@ -38,7 +38,7 @@ If the request contains `--unattended`, or this is a scheduled task/routine with
 
 ## Content & audio rules (always)
 
-Read `references/content-policy.md` once per video. In short: **male voice only**; **no music** unless the user asks (`--music`); **no images of women or girls**; **no haram products or themes**; prefer nature and animal imagery, the product's real UI and code-drawn visuals; external photos only from free-licence sources (Unsplash, Pexels, Wikimedia Commons) or generated, never random Google Images results; log every image source in `NOTES.md`.
+Read `references/content-policy.md` once per video. In short: **male voice only**, enforced on the audio by `scripts/voicecheck.py` (pitch gate in voice.py and sfx.py mix; never feed narration that didn't pass it); **no music** unless the user asks (`--music`); **no images of women or girls**; **no haram products or themes**; prefer nature and animal imagery, the product's real UI and code-drawn visuals; external photos only from free-licence sources (Unsplash, Pexels, Wikimedia Commons) or generated, never random Google Images results; log every image source in `NOTES.md`.
 
 ## Type presets
 
