@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.2 (2026-10-09)
+- Type presets (promo, overview, tutorial, demo, explainer, reel, ui-loop, logo, 3D, setup) now bundled inside the skill, so uploaded-skill users on claude.ai get the same guidance as plugin users
+- doctor warns when the Gemini voice endpoint is blocked
+
 ## v1.1.1 (2026-10-09)
 - Standard marketplace layout so the plugin shows up in claude.ai Customize → Plugins
 - skill zip attached to every release for claude.ai upload
