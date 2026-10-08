@@ -13,7 +13,8 @@ VER="${1:-}"; NOTES="${2:-}"
 [[ "$VER" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "usage: ./release.sh X.Y.Z \"what changed\""; exit 1; }
 [ -n "$NOTES" ] || { echo "Give release notes as the second argument."; exit 1; }
 [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "Switch to main first."; exit 1; }
-[ -z "$(git status --porcelain)" ] || { echo "Commit or stash your changes first (release.sh only bumps the version)."; exit 1; }
+python tools/sync_presets.py >/dev/null 2>&1 || python3 tools/sync_presets.py >/dev/null
+[ -z "$(git status --porcelain)" ] || { echo "Uncommitted changes (or presets out of sync after tools/sync_presets.py): commit them first."; exit 1; }
 git rev-parse "v$VER" >/dev/null 2>&1 && { echo "Tag v$VER already exists."; exit 1; }
 
 PY=""; for c in python3 python py; do command -v $c >/dev/null && $c -c "import sys" 2>/dev/null && { PY=$c; break; }; done

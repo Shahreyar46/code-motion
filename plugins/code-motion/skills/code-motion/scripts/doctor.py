@@ -99,6 +99,14 @@ if has_mod('edge_tts') and net.get('edge-tts voice'):
         n = asyncio.run(go()); check('voice synthesis (edge-tts, male)', n > 1000, f'{n} bytes')
     except Exception as e:
         check('voice synthesis (edge-tts, male)', False, str(e)[:120], 'needs internet; or set GEMINI_API_KEY / ELEVENLABS_API_KEY')
+if os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY'):
+    try:
+        import urllib.request, json as _j
+        k = os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY')
+        urllib.request.urlopen(urllib.request.Request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1', headers={'x-goog-api-key': k}), timeout=10)
+        check('Gemini voice endpoint reachable', True)
+    except Exception as e:
+        check('Gemini voice endpoint reachable', False, str(e)[:120], 'network blocks generativelanguage.googleapis.com here (e.g. a cloud thread linked to a computer, or a firewall). Unlink/allow it, or record the voice on a machine that can reach it; edge-tts is used as fallback.')
 check('premium voice key (optional)', True, 'GEMINI_API_KEY set' if os.environ.get('GEMINI_API_KEY') else ('ELEVENLABS_API_KEY set' if os.environ.get('ELEVENLABS_API_KEY') else 'none, free voice will be used'))
 
 if browser_ok and ff:

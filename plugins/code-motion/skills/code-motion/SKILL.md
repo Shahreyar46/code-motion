@@ -42,7 +42,7 @@ Read `references/content-policy.md` once per video. In short: **male voice only*
 
 ## Type presets
 
-Each video type has a preset with its structure, defaults, template, brief questions and quality bar. When installed as the code-motion plugin they live in `${CLAUDE_PLUGIN_ROOT}/commands/` (`promo.md`, `overview.md`, `tutorial.md`, `demo.md`, `explainer.md`, `reel.md`, `ui-loop.md`, `logo.md`, `scene-3d.md`); users can also call them directly as `/code-motion:<type>`. Identify the type and read its preset before the brief. Without the plugin, use `references/video-types.md`.
+Each video type has a preset with its structure, defaults, template, brief questions and quality bar. When installed as the code-motion plugin they live in `${CLAUDE_PLUGIN_ROOT}/commands/` (`promo.md`, `overview.md`, `tutorial.md`, `demo.md`, `explainer.md`, `reel.md`, `ui-loop.md`, `logo.md`, `scene-3d.md`); users can also call them directly as `/code-motion:<type>`. Identify the type and read its preset before the brief. The same presets are bundled in this skill at `references/presets/<type>.md` (use those when the plugin commands aren't available, e.g. an uploaded skill on claude.ai). Types: promo, overview, tutorial, demo, explainer, reel, ui-loop, logo, scene-3d; `video.md` routes ambiguous requests; `setup.md` covers setup and scheduling.
 
 ## Workflow
 
