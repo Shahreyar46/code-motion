@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.3 (2026-10-09)
+- Male voice now enforced on the audio itself: pitch check in voice.py and the final mix refuses female-sounding narration from any source (including old recordings)
+- default Gemini voice Charon
+
 ## v1.1.2 (2026-10-09)
 - Type presets (promo, overview, tutorial, demo, explainer, reel, ui-loop, logo, 3D, setup) now bundled inside the skill, so uploaded-skill users on claude.ai get the same guidance as plugin users
 - doctor warns when the Gemini voice endpoint is blocked
