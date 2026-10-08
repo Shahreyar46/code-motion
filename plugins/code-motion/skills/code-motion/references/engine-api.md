@@ -85,6 +85,10 @@ Aspect ratios: decide `W,H` from `M.AR`; add a class to `#stage` (e.g. `vertical
 | `M.orbsInit(box,[{c,x,y,r,blur,o}])` + `M.orbs(list,t,W,H)` | drifting blurred background orbs |
 | `M.pulse(t,period,lo,hi)` | breathing value for glows |
 | `M.sweep(t,t0,dur)` | 0..1 scan-line progress |
+| `M.along(path,n,t,t0,{dur,gap,ease})` | fly n items along an SVG path (element or `'M…'` string), staggered → `[{x,y,angle,p,s,o,landed,t}]` with a small landing overshoot in `s`. Use for files/orders/chips flying from a form into a folder, database → storage, etc. |
+| `M.arc(t,t0,dur,p0,p1,bend)` | curved A→B move with adjustable bend (px, sign flips the side) → `{x,y,e}` |
+| `M.xblur(el,amt,'x'\|'y')` | directional motion blur (SVG filter) for fast horizontal/vertical moves; `M.smear` blurs both axes |
+| `M.flash(t,t0,dur)` | 0→1→0 flash opacity (white-flash transition; swap scenes at the peak `t0+dur/2`) |
 | `M.cam(worldEl,W,H,x,y,scale,rotDeg)` | 2D camera: world point (x,y) at screen centre |
 | `M.tilt(rx,ry,z,persp)` | CSS 2.5D transform string |
 | `M.path([[t,x,y],…])` | eased point path with human arc (cursor, flying objects) |

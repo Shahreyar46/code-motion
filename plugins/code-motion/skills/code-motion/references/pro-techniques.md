@@ -141,6 +141,14 @@ M.setText(num, M.count(t, t0, 1.2, 10, 92)); bar.style.width = (92*M.expo((t-t0)
 M.ripple(t, t0).forEach((g,i)=>{ rings[i].style.transform=`scale(${g.s})`; rings[i].style.opacity=g.o; });
 M.burst(t, t0, 40).forEach((p,i)=>{ const e=dots[i]; e.style.transform=`translate(${p.x}px,${p.y}px) rotate(${p.r}deg) scale(${p.s})`; e.style.opacity=p.o; e.style.background=p.c; });
 
+// files flying from a form into a folder along a drawn connector (submission → storage), with landing ticks
+const ps = M.along(M.$('route'), 6, t, tSend, {dur:0.7, gap:0.18});                 // <path id="route" d="M560 540 C 820 260, 1120 260, 1360 520"/>
+ps.forEach((p,i)=>{ chips[i].style.transform=`translate(${p.x}px,${p.y}px) rotate(${p.landed?0:p.angle*0.15}deg) scale(${p.s})`; M.xblur(chips[i], p.landed?0:10*Math.sin(Math.PI*p.p)); });
+M.setText(count, String(ps.filter(p=>p.landed).length));                           // setup: M.cue(tSend+i*0.18,'swish') and M.cue(tSend+i*0.18+0.7,'tick')
+
+// white-flash scene swap
+flash.style.opacity = M.flash(t, tCut-0.09, 0.18);  sceneA.style.visibility = t < tCut ? '' : 'hidden';
+
 // ambient orbs
 const orbs = M.orbsInit(M.$('bg'), [{c:'#B9A6FF',x:.15,y:.2,r:900},{c:'#A8DCF5',x:.85,y:.85,r:1000}]);  // setup
 M.orbs(orbs, t, W, H);                                                                                   // draw

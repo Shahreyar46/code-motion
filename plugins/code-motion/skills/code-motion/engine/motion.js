@@ -156,6 +156,30 @@ M.pulse = (t,period=2.4,lo=0.45,hi=0.75)=>lo+(hi-lo)*(0.5+0.5*Math.sin(2*Math.PI
 // scan line sweep progress (for "analysing" cards)
 M.sweep = (t,t0,dur=1.2)=>clamp((t-t0)/dur);
 
+// curved move from p0 to p1 with adjustable bend (perpendicular bow, px; negative bends the other way)
+M.arc = (t,t0,dur,p0,p1,bend=120,ease=eio)=>{const e=ease((t-t0)/dur), dx=p1[0]-p0[0], dy=p1[1]-p0[1], L=Math.hypot(dx,dy)||1, b=bend*Math.sin(Math.PI*e);
+  return {x:p0[0]+dx*e-dy/L*b, y:p0[1]+dy*e+dx/L*b, e};};
+// horizontal-only (or vertical-only) motion blur via a per-element SVG filter. amt in px; axis 'x' | 'y'
+M.xblur = (el,amt,axis='x')=>{
+  if(!el._xb){ const id='cmxb'+Math.random().toString(36).slice(2,8); let defs=document.getElementById('cm-filters');
+    if(!defs){ defs=document.createElementNS('http://www.w3.org/2000/svg','svg'); defs.id='cm-filters'; defs.setAttribute('width','0'); defs.setAttribute('height','0'); defs.style.position='absolute'; document.body.appendChild(defs); }
+    defs.insertAdjacentHTML('beforeend',`<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="0 0"/></filter>`);
+    el._xb=defs.querySelector('#'+id+' feGaussianBlur'); el._xbid=id; }
+  const a=Math.max(0,amt); el._xb.setAttribute('stdDeviation',axis==='x'?`${a.toFixed(2)} 0`:`0 ${a.toFixed(2)}`);
+  el.style.filter=a>0.05?`url(#${el._xbid})`:'none';
+};
+// white (or any colour) flash: opacity 0 -> 1 -> 0 over dur, peak at t0 + dur/2 (swap scenes at the peak)
+M.flash = (t,t0,dur=0.18)=>{const u=(t-t0)/dur; return u<0||u>1?0:Math.sin(Math.PI*u);};
+// fly N items along an SVG path (element or 'M..' string), staggered; for "file chips into a folder" moves.
+// returns [{x,y,angle,p,s,o,landed}] in the path's coordinate space. o.dur per item, o.gap stagger, o.ease, o.land (overshoot scale on landing)
+M.along = (path,n,t,t0,o={})=>{
+  if(typeof path==='string'){ M._paths=M._paths||{}; if(!M._paths[path]){const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',path); M._paths[path]=p;} path=M._paths[path]; }
+  const L=path._len??(path._len=path.getTotalLength()), dur=o.dur??0.65, gap=o.gap??0.08, ease=o.ease||eio;
+  return Array.from({length:n},(_,i)=>{const a=t0+i*gap, p=ease((t-a)/dur), pt=path.getPointAtLength(L*p), pt2=path.getPointAtLength(Math.min(L,L*p+1));
+    const land=S(t-a-dur,22,0.55); const s=t<a?0:(p<1?0.75+0.25*eo((t-a)/0.15):1+0.18*(1-land)*Math.sin(Math.PI*Math.min(1,(t-a-dur)/0.25)));
+    return {x:pt.x, y:pt.y, angle:Math.atan2(pt2.y-pt.y,pt2.x-pt.x)*180/Math.PI, p, s, o:t<a?0:Math.min(1,(t-a)/0.08), landed:t>=a+dur, t:a};});
+};
+
 /* ---------- camera ---------- */
 // 2D camera on a world element: x,y = world point at screen centre, s = zoom, r = degrees
 M.cam = (el,W,H,x,y,s=1,r=0)=>{el.style.transformOrigin='0 0';el.style.transform=`translate(${W/2}px,${H/2}px) rotate(${r}deg) scale(${s}) translate(${-x}px,${-y}px)`;};
