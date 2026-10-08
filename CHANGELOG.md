@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.0 (2026-10-09)
+- Scheduled videos with your machine off (Claude Code on the web): --unattended mode, brief.md + queue.md, results pushed to a videos branch
+- /code-motion:setup --schedule
+- doctor.py environment check
+- project settings so the plugin loads in Desktop, VS Code and web
+
 ## v1.0.1 (2026-10-09)
 - Docs: install from Claude Code or terminal
 - how to turn on auto-update (UI or settings.json)
