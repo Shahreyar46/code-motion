@@ -1,0 +1,207 @@
+<title>code-motion · launch film template</title>
+<!--
+  Template: 6-scene launch film, every beat anchored to a VO word (needs --vo timings.json at build).
+  Pairs with templates/launch-film.script.json. Copy both, then replace copy, colours and scenes.
+  Patterns shown: kinetic words on VO times, 2.5D code card with typing, slam + strike-through,
+  hand-written annotation, cards built from springs, waveform driven by real word timings,
+  progress + real frame counter, logo reveal, scene transitions, camera push, sound cues on every hit.
+-->
+<style>
+  :root{--bg:#0d0e12;--ink:#F3F1EC;--mute:#8b8f98;--line:#24262d;--card:#15171c;--acc:#FF5A1F}
+  #stage{color:var(--ink)}
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .c{position:relative;display:flex;align-items:center;justify-content:center;transform-origin:50% 50%}
+  .vertical .split{flex-direction:column;gap:70px!important}
+  .big{font-weight:700;font-size:132px;line-height:1.02;letter-spacing:-0.035em}
+  .acc{color:var(--acc)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+  .code{font-family:'Geist Mono';font-size:30px;line-height:1.6;color:#cfd2d8;white-space:pre;padding:44px 52px;width:700px;height:330px}
+  .code .k{color:var(--acc)} .code .d{color:var(--mute)}
+  .slam{font-family:'Anton';font-size:150px;line-height:1.08;text-transform:uppercase;position:relative;white-space:nowrap}
+  .strike{position:absolute;left:-14px;right:-14px;top:54%;height:24px;overflow:visible}
+  .hand{font-family:'Caveat';font-size:58px;color:var(--acc)}
+  .skel{height:18px;border-radius:9px;background:#2a2d35;margin:14px 0}
+  .chip{position:absolute;bottom:250px;font-size:30px;font-weight:600;padding:10px 18px;border-radius:999px;background:#1d1f25;color:var(--mute);transform:translateX(-50%);white-space:nowrap}
+  .pill{display:flex;align-items:center;gap:26px;font-size:60px;font-weight:650;padding:34px 48px;width:900px}
+  .bar{height:12px;border-radius:6px;background:#262830;overflow:hidden;flex:1}
+  .tile{width:70px;height:42px;border-radius:6px;background:#2a2d35}
+</style>
+
+<div class="fill" id="world">
+  <!-- 1 hook -->
+  <div class="scene" id="s1"><div class="c split" style="gap:110px">
+    <div class="big" style="width:820px"><div id="h1">Every frame</div><div id="h2">is <span class="acc">code.</span></div></div>
+    <div class="card code" id="code"></div>
+  </div></div>
+  <!-- 2 problem -->
+  <div class="scene" id="s2"><div class="c col" style="align-items:flex-start;gap:6px">
+    <div class="slam" id="n0">No timeline.<svg class="strike"><path d="M0 12 C200 4 500 18 900 8" stroke="#FF5A1F" stroke-width="12" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="slam" id="n1">No keyframes.<svg class="strike"><path d="M0 10 C260 18 560 2 1000 12" stroke="#FF5A1F" stroke-width="12" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="slam" id="n2">No editor.<svg class="strike"><path d="M0 14 C180 6 420 16 760 8" stroke="#FF5A1F" stroke-width="12" fill="none" stroke-linecap="round"/></svg></div>
+  </div></div>
+  <!-- 3 how -->
+  <div class="scene" id="s3"><div class="c split" style="gap:160px">
+    <div class="col" style="align-items:center;gap:26px"><div class="card" id="story" style="width:600px;height:420px;padding:52px">
+      <div style="font:600 30px Geist;color:var(--mute)">script.json</div>
+      <div class="skel" style="width:90%"></div><div class="skel" style="width:72%"></div><div class="skel" style="width:84%"></div><div class="skel" style="width:58%"></div></div>
+      <div class="hand" id="you">you write the story</div></div>
+    <svg width="140" height="40" id="arrow" style="flex:none"><path d="M4 20 H128 M108 4 L130 20 L108 36" stroke="#8b8f98" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="col" style="align-items:center;gap:26px"><div class="card" id="mo" style="width:600px;height:420px;position:relative">
+      <div style="position:absolute;left:46px;top:46px;font:600 30px Geist;color:var(--mute)">motion</div>
+      <div class="a" id="d0" style="width:64px;height:64px;border-radius:32px;background:var(--acc)"></div>
+      <div class="a" id="d1" style="width:64px;height:64px;border-radius:18px;background:var(--ink)"></div>
+      <div class="a" id="d2" style="width:64px;height:64px;border-radius:32px;border:6px solid var(--acc)"></div></div>
+      <div class="hand" id="agent">the agent writes the motion</div></div>
+  </div></div>
+  <!-- 4 sync -->
+  <div class="scene" id="s4"><div class="c" id="wavebox" style="width:1500px;height:700px">
+    <svg id="wave" width="1500" height="200" style="position:absolute;bottom:20px;left:0"></svg>
+    <div class="a" id="head" style="width:4px;height:330px;background:var(--acc);bottom:0;border-radius:2px"></div>
+    <div class="big" id="syncT" style="position:absolute;top:30px;width:100%;text-align:center;font-size:96px">Every move lands on a word.</div>
+  </div></div>
+  <!-- 5 render / check / ship -->
+  <div class="scene" id="s5"><div class="c col" style="gap:34px">
+    <div class="card pill" id="p0"><span id="i0"></span>Render<div class="bar"><div id="fill" style="height:100%;width:0;background:var(--acc)"></div></div><span class="mono" id="frames" style="font-size:30px;color:var(--mute);width:150px;text-align:right">0</span></div>
+    <div class="card pill" id="p1"><span id="i1"></span>Check<div class="row" id="tiles" style="gap:8px;margin-left:auto"></div></div>
+    <div class="card pill" id="p2"><span id="i2"></span>Ship<span id="ok" style="margin-left:auto"></span></div>
+  </div></div>
+  <!-- 6 end card -->
+  <div class="scene" id="s6"><div class="c col" style="gap:34px">
+    <div class="row" style="gap:34px"><div id="mark" style="width:150px;height:150px;border-radius:40px;background:var(--acc);display:flex;align-items:center;justify-content:center"></div>
+      <div id="wm" style="font-weight:700;font-size:120px;letter-spacing:-0.04em">code-motion</div></div>
+    <div id="tag" style="font-size:44px;color:var(--mute)">Video, written in code.</div>
+  </div></div>
+</div>
+<div class="vignette"></div>
+
+<script>
+/* ---------- format ---------- */
+const VERT = M.AR==='9x16';
+const W = VERT?1080:1920, H = VERT?1920:1080;
+if(VERT) M.$('stage').classList.add('vertical');
+document.querySelectorAll('.c').forEach(c=>c.style.transform=VERT?'scale(0.62)':'');   // design is 16:9; vertical scales the content block
+
+/* ---------- timing: everything hangs off the voiceover ---------- */
+const L = M.line, w = M.word;
+const END = M.VO.duration + 1.2;                     // hold the end card a beat after the last word
+const SC = [                                         // [element, in, out]  (out = next line start, a hair early)
+  ['s1', 0,                       L('problem').start-0.12],
+  ['s2', L('problem').start-0.12, L('how').start-0.12],
+  ['s3', L('how').start-0.12,     L('sync').start-0.12],
+  ['s4', L('sync').start-0.12,    L('ship').start-0.12],
+  ['s5', L('ship').start-0.12,    L('end').start-0.15],
+  ['s6', L('end').start-0.15,     null],
+].map(([id,a,b])=>({el:M.$(id),a,b}));
+// transition sounds: one whoosh per cut, panned the way the motion goes
+SC.slice(1).forEach((s,i)=>M.cue(s.a-0.18,'whoosh',{g:0.55,d:0.5,pan:i%2?0.3:-0.3}));
+
+/* ---------- scene 1: kinetic hook + code card ---------- */
+const h1 = M.split(M.$('h1')), h2 = M.split(M.$('h2'));
+const tEvery = w('hook','every'), tFrame = w('hook','frame'), tCode = w('hook','code');
+const CODE = 'function seek(t) {\n  logo.scale = spring(t - 1.2);\n  title.y    = rise(t - 1.6);\n  return frame;\n}';
+const tType = tFrame + 0.15, CPS = 64;              // card arrives early so the code is readable before the cut
+M.cue(tEvery,'swish',{g:0.5}); M.cue(tCode,'thud',{g:0.7}); M.cue(tFrame,'pop',{g:0.5,pan:0.4});
+for(let i=0;i<CODE.length;i+=2) if(CODE[i].trim() && tType+i/CPS < SC[0].b) M.cue(tType+i/CPS,'key',{g:0.22,pan:0.35});
+const hl = s=>s.replace(/(function|return)/g,'<span class="k">$1</span>').replace(/(spring|rise)/g,'<span class="d">$1</span>');
+
+/* ---------- scene 2: slams + strikes ---------- */
+const N = [0,1,2].map(i=>({el:M.$('n'+i), path:M.$('n'+i).querySelector('path'), t:w('problem',['timeline','keyframes','editor'][i])}));
+N.forEach(n=>{ M.cue(n.t,'impact',{g:0.55,d:0.9}); M.cue(n.t+0.32,'pen',{g:0.6,d:0.35}); });
+
+/* ---------- scene 3: story -> motion ---------- */
+const tStory = w('how','story'), tAgent = w('how','agent'), tMotion = w('how','motion');
+const skel = [...M.$('story').querySelectorAll('.skel')];
+M.cue(tStory-0.1,'pop',{g:0.6,pan:-0.4}); skel.forEach((_,i)=>M.cue(tStory+0.15+i*0.09,'tick',{g:0.35,pan:-0.4}));
+M.cue(tAgent,'pen',{g:0.5,d:0.4}); M.cue(tMotion-0.1,'pop',{g:0.6,pan:0.4});
+const dots=[0,1,2].map(i=>({el:M.$('d'+i),t:tMotion+0.05+i*0.12}));
+dots.forEach(d=>M.cue(d.t,'bubble',{g:0.45,pan:0.4}));
+
+/* ---------- scene 4: waveform from the real word timings ---------- */
+const S4 = SC[3], syncWords = M.line('sync').words;
+const WAVE_W = 1500, BARS = 96, x0 = S4.a, x1 = S4.b;          // the waveform spans the scene
+const tx = t=>WAVE_W*(t-x0)/(x1-x0);
+const rnd = M.rand(4);
+const bars = Array.from({length:BARS},(_,i)=>{const tt=x0+(i+0.5)/BARS*(x1-x0); const speaking=syncWords.some(q=>tt>=q.start&&tt<=q.end); return (speaking?0.45+0.55*rnd():0.06+0.08*rnd());});
+M.$('wave').innerHTML = bars.map((h,i)=>`<rect x="${i*WAVE_W/BARS+2}" width="${WAVE_W/BARS-6}" rx="4" fill="#2c2f37"/>`).join('');
+const rects = [...M.$('wave').querySelectorAll('rect')];
+const KEY = syncWords.filter(q=>q.w.replace(/\W/g,'').length>3).slice(0,6);   // words worth a chip
+const chips = KEY.map(q=>{const c=document.createElement('div'); c.className='chip'; c.textContent=q.w.replace(/[^\w'-]/g,''); c.style.left=tx(q.start)+'px'; M.$('wavebox').appendChild(c); M.cue(q.start,'tick',{g:0.5,pan:(tx(q.start)/WAVE_W-0.5)}); return {el:c,t:q.start};});
+const syncT = M.split(M.$('syncT'));
+
+/* ---------- scene 5: render / check / ship ---------- */
+const tR = w('ship','render'), tC = w('ship','check'), tS = w('ship','ship');
+const FRAMES = Math.round(END*60);                                   // real: this video's own frame count at 60 fps
+M.$('tiles').innerHTML = Array.from({length:6},()=>'<div class="tile"></div>').join('');
+const tiles=[...M.$('tiles').children];
+['i0','i1','i2'].forEach((id,i)=>M.$(id).innerHTML=M.icon(['play','search','check'][i],44,i===2?'#FF5A1F':'#8b8f98',2.4));
+M.cue(tR,'pop',{g:0.5}); M.cue(tR+0.1,'roll',{g:0.5,d:1.0});
+M.cue(tC,'pop',{g:0.5}); tiles.forEach((_,i)=>M.cue(tC+0.15+i*0.05,'shutter',{g:0.18,pan:0.5}));
+M.cue(tS,'pop',{g:0.5}); M.cue(tS+0.3,'success',{g:0.6});
+
+/* ---------- scene 6: logo reveal ---------- */
+const tEnd = SC[5].a+0.15, wm = M.split(M.$('wm'),'chars');
+M.$('mark').innerHTML = `<svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#0d0e12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path id="br1" d="M8 6 L3 12 L8 18"/><path id="br2" d="M16 6 L21 12 L16 18"/><path id="tri" d="M10 8.5 L15.5 12 L10 15.5 Z" fill="#0d0e12"/></svg>`;
+M.cue(tEnd,'reveal',{g:0.85}); M.cue(tEnd-0.02,'riser',{g:0.35,d:0.9});
+
+/* ---------- draw ---------- */
+M.video({W,H,T:END,bg:'#0d0e12',draw:(t)=>{
+  // scenes: enter/exit with blur, slow camera push inside each
+  for(const s of SC){
+    const v = M.vis(t,s.a,s.b,{lin:0.45,lout:0.22,blur:18});
+    const push = 1 + 0.035*M.eio((t-s.a)/Math.max(1,(s.b??END)-s.a));
+    M.apply(s.el,v,`scale(${push.toFixed(4)})`);
+  }
+  // 1
+  if(t<SC[0].b+0.3){
+    M.words(h1,t,[tEvery,tFrame],{style:'rise'});
+    M.words(h2,t,[tCode-0.12,tCode],{style:'rise'});
+    const c=M.$('code'), k=M.sp(t,tFrame,M.SOFT);
+    c.style.opacity=M.clamp((t-tFrame)/0.2); c.style.transform=M.tilt(18*(1-k),-24*(1-k)+(-6),0)+` translateY(${(1-k)*120}px)`;
+    const s=M.typed(CODE,t,tType,CPS); const html=hl(s)+(t>tType-0.3?`<span class="k">${M.caret(t)}</span>`:'');
+    if(c._h!==html){c.innerHTML=html;c._h=html;}
+  }
+  // 2
+  if(t>SC[1].a-0.1&&t<SC[1].b+0.3){
+    let sx=0,sy=0;
+    N.forEach(n=>{ M.words([n.el],t,[n.t],{style:'slam'}); M.stroke(n.path,t,n.t+0.32,0.3,M.eo);
+      n.el.style.color = t>n.t+0.4 ? '#5d616b':'#F3F1EC'; const [a,b]=M.shake(t,n.t+0.03,10); sx+=a; sy+=b; });
+    M.$('s2').firstElementChild.style.translate=`${sx}px ${sy}px`;
+  }
+  // 3
+  if(t>SC[2].a-0.1&&t<SC[2].b+0.3){
+    const st=M.$('story'), k=M.sp(t,tStory-0.1,M.MORPH); st.style.opacity=M.clamp((t-tStory+0.1)/0.15); st.style.transform=`translateY(${(1-k)*60}px) rotate(${(1-k)*-4}deg)`;
+    skel.forEach((e,i)=>{const p=M.eo((t-tStory-0.15-i*0.09)/0.35); e.style.transform=`scaleX(${p})`; e.style.transformOrigin='0 50%';});
+    const you=M.$('you'); you.style.clipPath=`inset(0 ${100-100*M.eio((t-tStory-0.1)/0.7)}% 0 0)`;
+    const ag=M.$('agent'); ag.style.clipPath=`inset(0 ${100-100*M.eio((t-tAgent)/0.8)}% 0 0)`;
+    M.stroke(M.$('arrow').querySelector('path'),t,tAgent,0.45);
+    const mo=M.$('mo'), k2=M.sp(t,tMotion-0.1,M.MORPH); mo.style.opacity=M.clamp((t-tMotion+0.1)/0.15); mo.style.transform=`translateY(${(1-k2)*60}px) rotate(${(1-k2)*4}deg)`;
+    dots.forEach((d,i)=>{ // each dot: spring in, then a gentle looping orbit = "motion"
+      const a=M.sp(t,d.t,M.POP), ph=(t-d.t)*1.6+i*2.1;
+      d.el.style.left=(130+i*160)+'px'; d.el.style.top=(200+Math.sin(ph)*38*M.clamp(t-d.t))+'px';
+      d.el.style.transform=`scale(${a.toFixed(3)}) rotate(${(t-d.t)*90*(i===1)}deg)`; });
+  }
+  // 4
+  if(t>S4.a-0.1&&t<S4.b+0.3){
+    rects.forEach((r,i)=>{const tt=x0+(i+0.5)/BARS*(x1-x0); const g=M.sp(t,S4.a+i*0.006,M.FAST); const h=10+bars[i]*180*g; r.setAttribute('y',200-h); r.setAttribute('height',h); r.setAttribute('fill',t>=tt?'#FF5A1F':'#2c2f37');});
+    M.$('head').style.left=Math.min(WAVE_W,tx(t))+'px';
+    chips.forEach(c=>{const v=M.sp(t,c.t,M.POP); c.el.style.transform=`translateX(-50%) translateY(${(1-v)*30}px) scale(${0.7+0.3*v})`; c.el.style.opacity=M.clamp((t-c.t+0.05)/0.1); const on=t>=c.t; c.el.style.background=on?'#FF5A1F':'#1d1f25'; c.el.style.color=on?'#0d0e12':'#8b8f98';});
+    M.words(syncT,t,syncWords.slice(0,syncT.length).map(q=>q.start),{style:'blur'});
+  }
+  // 5
+  if(t>SC[4].a-0.1&&t<SC[4].b+0.3){
+    [[ 'p0',tR],['p1',tC],['p2',tS]].forEach(([id,t0])=>{const e=M.$(id), k=M.sp(t,t0-0.08,M.MORPH); e.style.opacity=M.clamp((t-t0+0.08)/0.12); e.style.transform=`translateX(${(1-k)*-90}px)`;});
+    const p=M.expo((t-tR-0.1)/1.0); M.$('fill').style.width=(100*p)+'%'; M.setText(M.$('frames'),M.count(t,tR+0.1,1.0,0,FRAMES)+' f');
+    tiles.forEach((e,i)=>{const v=M.sp(t,tC+0.15+i*0.05,M.POP); e.style.transform=`scale(${v})`; e.style.background=t>tC+0.5+i*0.05?'#3a3d46':'#2a2d35';});
+    const ok=M.sp(t,tS+0.3,M.POP); const okEl=M.$('ok'); if(!okEl.innerHTML) okEl.innerHTML=`<div style="width:64px;height:64px;border-radius:32px;background:#FF5A1F;display:flex;align-items:center;justify-content:center">${M.icon('check',38,'#0d0e12',3)}</div>`;
+    okEl.style.transform=`scale(${ok})`; okEl.style.display='block';
+  }
+  // 6
+  if(t>SC[5].a-0.1){
+    const k=M.sp(t,tEnd,[13,0.78]), mark=M.$('mark');
+    mark.style.transform=`scale(${0.4+0.6*k}) rotate(${(1-k)*-40}deg)`; mark.style.opacity=M.clamp((t-tEnd)/0.1);
+    const br=['br1','br2'].map(M.$); br.forEach(b=>M.stroke(b,t,tEnd+0.15,0.4)); M.$('tri').style.opacity=M.clamp((t-tEnd-0.45)/0.2);
+    M.words(wm,t,tEnd+0.2,{step:0.03,style:'mask'});
+    const tg=M.$('tag'); tg.style.opacity=M.clamp((t-tEnd-0.7)/0.3); tg.style.transform=`translateY(${(1-M.sp(t,tEnd+0.7))*20}px)`;
+  }
+}});
+</script>

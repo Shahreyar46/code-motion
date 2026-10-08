@@ -1,0 +1,42 @@
+/* fonts are injected by build.py as @font-face rules */
+html,body{margin:0;background:#0b0b0b;overflow:hidden}
+html.alpha,html.alpha body{background:transparent}
+body.preview{height:100vh;background:#161616}
+#wrap{position:relative;transform-origin:50% 50%}
+body.preview #wrap{position:fixed;left:50%;top:calc(50% - 22px)}
+#stage{position:relative;overflow:hidden;font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#0B0B0B;font-feature-settings:"tnum" 1}
+#stage *{box-sizing:border-box}
+/* generic helpers */
+.a{position:absolute}
+.fill{position:absolute;inset:0}
+.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.row{display:flex;align-items:center;white-space:nowrap}
+.col{display:flex;flex-direction:column}
+.mono{font-family:'Geist Mono',ui-monospace,monospace}
+.anton{font-family:'Anton',Impact,sans-serif;letter-spacing:.005em}
+.hand{font-family:'Caveat',cursive}
+.serif{font-family:'Instrument Serif',Georgia,serif}
+.nowrap{white-space:nowrap}
+svg{display:block;overflow:visible}
+/* one-shape morph scene (M.morph / motion-broll fragments) */
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#shape{position:absolute;overflow:hidden;isolation:isolate;box-shadow:0 1px 2px rgba(20,18,14,.06),0 10px 30px -8px rgba(20,18,14,.16)}
+html.alpha #shape{box-shadow:none}
+.L{position:absolute;width:0;height:0;transform-origin:0 0}
+.blend{mix-blend-mode:difference}
+#cursor{position:absolute;left:0;top:0;height:auto;transform-origin:3px 3px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));z-index:50}
+/* glass card (light SaaS look) and neon rim (AI look). Tune via CSS vars on the element. */
+.glass{background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:0 24px 60px -18px rgba(40,60,160,.22),0 2px 6px rgba(20,30,80,.06)}
+.rim{position:relative;border-radius:28px;background:#1b1c20}
+.rim::before{content:"";position:absolute;inset:-2px;border-radius:inherit;padding:2px;background:linear-gradient(135deg,var(--rim1,#4F7BFF),var(--rim2,#9B7CF0));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.rim::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 50px 4px color-mix(in srgb,var(--rim1,#4F7BFF) 45%,transparent),0 0 110px 10px color-mix(in srgb,var(--rim2,#9B7CF0) 25%,transparent);pointer-events:none;opacity:var(--glow,1)}
+.grad{background-clip:text;-webkit-background-clip:text;color:transparent}
+.skel{height:14px;border-radius:7px;background:currentColor;opacity:.12}
+.orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+/* film texture overlays (optional): add <div class="grain"></div> / <div class="vignette"></div> inside #stage */
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45) 100%);z-index:40}
+/* preview player bar (never rendered) */
+#pbar{position:fixed;left:0;right:0;bottom:0;height:34px;background:#222;cursor:pointer;font:12px/34px 'Geist Mono',monospace;color:#bbb}
+#pfill{position:absolute;left:0;top:0;bottom:0;background:#3a3a3a;pointer-events:none}
+#ptime{position:relative;padding-left:12px;pointer-events:none}
+body.render #pbar{display:none}

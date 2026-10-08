@@ -1,0 +1,144 @@
+<title>code-motion · light glass SaaS demo template</title>
+<!--
+  Template: light "glass" SaaS demo / tutorial (style 2 in references/styles.md), VO-anchored.
+  Pairs with templates/saas-demo.script.json. "YourApp" + all UI labels are placeholders: replace with the
+  real product's copy, colours and logo before use (never ship invented numbers).
+  Shows: drifting orbs, typed caption with gradient last word, "Meet" hero + fly-through exit, letter-scramble
+  logo, tilted dashboard settling flat, cursor click, morph chain (button -> loading pill -> check), ripple rings,
+  crop-zoom camera into one card, chart stroke draw + counter + rolling word, orbiting avatars + toasts, CTA + confetti.
+-->
+<style>
+  :root{--bg:#F6F6FD;--ink:#0A0A0F;--sub:#6B6F80;--pri:#2B4BF0;--sky:#6EC6F5}
+  #stage{color:var(--ink)}
+  .scene{position:absolute;inset:0}
+  .cap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-weight:600;font-size:76px;letter-spacing:-0.03em;white-space:nowrap}
+  .kw{background-image:linear-gradient(90deg,#2B4BF0,#6EC6F5)}
+  .pill{position:absolute;display:flex;align-items:center;justify-content:center;gap:16px;font-weight:600;white-space:nowrap;overflow:hidden}
+  .avatar{position:absolute;width:86px;height:86px;border-radius:50%;border:4px solid #fff;box-shadow:0 10px 30px -8px rgba(40,60,160,.35);display:flex;align-items:center;justify-content:center;font:700 32px Geist;color:#fff}
+  .toast{position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;padding:20px 28px;font-size:30px;font-weight:550;white-space:nowrap}
+  .dot{position:absolute;width:16px;height:16px;border-radius:4px}
+</style>
+
+<div class="orbs" id="bg"></div>
+<div class="fill" id="world">
+  <!-- 1 typed caption -->
+  <div class="scene" id="s1"><div class="glass pill" id="capPill" style="left:50%;top:50%;height:120px;border-radius:60px;font-size:54px;padding:0 54px;transform:translate(-50%,-50%)">
+    <span id="typed"></span><span class="grad kw" id="typedKw"></span><span id="caret" style="color:var(--pri);font-weight:300">|</span></div></div>
+  <!-- 2 meet -->
+  <div class="scene" id="s2">
+    <div class="cap" id="meet" style="font-size:300px;letter-spacing:-0.05em;font-weight:700">Meet</div>
+    <div class="cap row" id="lock" style="gap:30px"><div id="logo" style="width:120px;height:120px;border-radius:34px;background:linear-gradient(135deg,#2B4BF0,#6EC6F5)"></div><div id="name" style="font-size:120px;font-weight:700;letter-spacing:-0.04em">YourApp</div></div>
+  </div>
+  <!-- 3+4 dashboard (one plane, camera crops into it) -->
+  <div class="scene" id="s3"><div class="fill" id="dashWorld">
+    <div class="glass" id="dash" style="position:absolute;left:260px;top:150px;width:1400px;height:800px;padding:44px">
+      <div class="row" style="gap:14px;font-size:30px;font-weight:650"><div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2B4BF0,#6EC6F5)"></div>YourApp<span style="margin-left:auto;color:var(--sub);font-weight:500;font-size:24px">Dashboard</span></div>
+      <div class="glass" id="srcCard" style="position:absolute;left:44px;top:120px;width:560px;height:250px;padding:34px;box-shadow:none;background:#fff">
+        <div style="font-size:30px;font-weight:650">Data source</div><div class="skel" style="width:70%;margin-top:18px"></div><div class="skel" style="width:52%;margin-top:12px"></div></div>
+      <div class="pill" id="btn" style="left:84px;top:300px;height:64px;color:#fff;font-size:26px"></div>
+      <div class="glass" id="chartCard" style="position:absolute;left:640px;top:120px;width:716px;height:420px;padding:34px;box-shadow:none;background:#fff">
+        <div class="row" style="gap:12px;font-size:30px;font-weight:650">Weekly <span class="grad kw" id="cyc" style="display:inline-block;min-width:200px">revenue</span></div>
+        <div id="num" style="font-size:64px;font-weight:700;letter-spacing:-0.03em;margin-top:8px">0</div>
+        <svg width="648" height="200" style="position:absolute;left:34px;bottom:30px"><path id="line" d="M0 170 C80 160 120 120 190 130 S300 80 360 95 S470 40 540 50 S620 20 648 12" stroke="#2B4BF0" stroke-width="6" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="glass" style="position:absolute;left:44px;top:400px;width:560px;height:350px;padding:34px;box-shadow:none;background:#fff"><div class="skel" style="width:40%"></div><div class="skel" style="width:85%;margin-top:22px"></div><div class="skel" style="width:76%;margin-top:14px"></div><div class="skel" style="width:81%;margin-top:14px"></div></div>
+      <div class="glass" style="position:absolute;left:640px;top:570px;width:716px;height:180px;padding:34px;box-shadow:none;background:#fff"><div class="skel" style="width:55%"></div><div class="skel" style="width:70%;margin-top:22px"></div></div>
+    </div>
+    <svg id="rings" width="1920" height="1080" style="position:absolute;left:0;top:0;pointer-events:none"></svg>
+  </div></div>
+  <!-- 5 share -->
+  <div class="scene" id="s5"><div class="glass center" id="hub" style="width:300px;height:300px;border-radius:80px;display:flex;align-items:center;justify-content:center"><div style="width:150px;height:150px;border-radius:44px;background:linear-gradient(135deg,#2B4BF0,#6EC6F5)"></div></div></div>
+  <!-- 6 end -->
+  <div class="scene" id="s6">
+    <div class="cap row" id="endLock" style="top:42%;gap:30px"><div style="width:130px;height:130px;border-radius:38px;background:linear-gradient(135deg,#2B4BF0,#6EC6F5)"></div><div style="font-size:130px;font-weight:700;letter-spacing:-0.04em">YourApp</div></div>
+    <div class="pill" id="cta" style="left:50%;top:62%;transform:translate(-50%,-50%);height:96px;padding:0 54px;border-radius:48px;background:#0A0A0F;color:#fff;font-size:40px">Try it free</div>
+    <div class="cap mono" id="url" style="top:73%;font-size:30px;font-weight:500;color:var(--sub)">yourapp.com</div>
+  </div>
+</div>
+<div id="cursor" style="position:absolute;left:0;top:0;width:46px;z-index:50;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))"></div>
+<div id="fx" class="fill" style="pointer-events:none"></div>
+
+<script>
+const W=1920,H=1080, L=M.line, w=M.word, END=M.VO.duration+2.2;
+const SC=[['s1',0,L('meet').start-0.1],['s2',L('meet').start-0.1,L('connect').start-0.15],['s3',L('connect').start-0.15,L('share').start-0.15],
+          ['s5',L('share').start-0.15,L('end').start-0.15],['s6',L('end').start-0.15,null]].map(([id,a,b])=>({el:M.$(id),a,b}));
+SC.slice(1).forEach((s,i)=>M.cue(s.a-0.15,i%2?'swish':'whoosh',{g:0.5,d:0.45,pan:i%2?0.3:-0.3}));
+const orbs=M.orbsInit(M.$('bg'),[{c:'#B9A6FF',x:.12,y:.18,r:1000},{c:'#A8DCF5',x:.9,y:.85,r:1100},{c:'#FFC6E0',x:.75,y:.1,r:700,o:.5}]);
+
+/* 1 typed caption: last word gradient */
+const capText=M.line('hook').text, lastSp=capText.lastIndexOf(' '), capA=capText.slice(0,lastSp+1), capB=capText.slice(lastSp+1);
+const tTy=L('hook').start, CPS=capText.length/Math.max(0.8,(L('hook').end-tTy)*0.85);     // finish typing just before the voice does
+for(let i=0;i<capText.length;i+=2) M.cue(tTy+i/CPS,'key',{g:0.2});
+M.gradInit(M.$('typedKw'),['#2B4BF0','#6EC6F5','#8A7CFF']);
+
+/* 2 meet */
+const meetSp=M.split(M.$('meet'),'chars'), nameSp=M.split(M.$('name'),'chars');
+const tMeet=w('meet','meet'), tName=L('name').start;              // separate VO line so "Meet" can hold a beat
+M.cue(tMeet-0.02,'riser',{g:0.3,d:0.8}); M.cue(tMeet,'thud',{g:0.6}); M.cue(tName,'shimmer',{g:0.4}); M.cue(tName,'pop',{g:0.5});
+
+/* 3 connect: tilt-in, cursor click, morph chain */
+const t3=SC[2].a, tClick=Math.max(w('connect','data'),t3+0.75), tLoad=tClick+0.05, tDone=tLoad+0.6;   // act early in the line so the result holds before the next beat
+const cur=M.path([[t3,1650,1000],[t3+0.25,1560,940],[tClick-0.05,410,532]]), press=M.presses([tClick]);
+M.$('cursor').innerHTML=M.CURSOR;
+M.cue(tClick,'click',{g:0.6,pan:-0.4}); M.cue(tLoad+0.1,'shimmer',{g:0.25,d:0.8}); M.cue(tDone,'success',{g:0.55,pan:-0.4});
+const bw=M.track(250,[[tLoad,300],[tDone,64]]), bbg=M.ctrack('#2B4BF0',[[tDone,'#22C55E']]);
+const ringEls=[0,1,2].map(()=>{const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('fill','none');c.setAttribute('stroke','#22C55E');c.setAttribute('stroke-width','3');M.$('rings').appendChild(c);return c;});
+
+/* 4 report: crop-zoom into the chart card */
+const tRep=w('report','report'), tZoom=L('report').start-0.1, tOut=L('share').start-0.6;
+const camS=M.track(1,[[tZoom,1.85,M.CAM],[tOut,1.25,M.CAM]]), camX=M.track(960,[[tZoom,1258,M.CAM]]), camY=M.track(540,[[tZoom,480,M.CAM]]);
+M.cue(tZoom,'whoosh',{g:0.45,d:0.7,pan:0.3}); M.cue(tRep,'roll',{g:0.4,d:1.1}); M.cue(tRep,'pen',{g:0.3,d:1.0});
+const CYC=['revenue','signups','churn'];   // placeholder metric names
+
+/* 5 share: orbiting avatars + toasts */
+const t5=SC[3].a+0.2, AV=['#FF7AB6','#2B4BF0','#22C55E','#FFB020','#8A7CFF'];
+const avs=AV.map((c,i)=>{const d=document.createElement('div');d.className='avatar';d.style.background=c;d.textContent='ABCDE'[i];M.$('s5').appendChild(d);M.cue(t5+0.25+i*0.12,'bubble',{g:0.4,pan:Math.cos(i*1.256)*0.6});return d;});
+const toasts=['Report shared with Design','Maya viewed the report'].map((s,i)=>{const d=document.createElement('div');d.className='glass toast';d.innerHTML=M.icon(i?'user':'bell',34,'#2B4BF0',2.2)+s;M.$('s5').appendChild(d);M.cue(t5+1.0+i*0.55,'ding',{g:0.35,pan:0.4});return d;});
+
+/* 6 end + confetti */
+const t6=SC[4].a+0.1, conf=Array.from({length:46},()=>{const d=document.createElement('div');d.className='dot';M.$('fx').appendChild(d);return d;});
+M.cue(t6,'reveal',{g:0.8}); M.cue(t6+0.6,'pop',{g:0.5}); M.cue(t6+0.62,'shimmer',{g:0.3});
+
+M.video({W,H,T:END,bg:'#F6F6FD',draw:(t)=>{
+  M.orbs(orbs,t,W,H); M.$('cursor').style.opacity=0;
+  for(const s of SC){const v=M.vis(t,s.a,s.b,{lin:0.4,lout:0.22,blur:16}); M.apply(s.el,v);}
+  // 1
+  const n=Math.max(0,Math.floor((t-tTy)*CPS)); M.setText(M.$('typed'),capA.slice(0,n)); M.setText(M.$('typedKw'),capB.slice(0,Math.max(0,n-capA.length)));
+  M.gradText(M.$('typedKw'),t,18); M.$('caret').style.opacity=(n<capText.length||((t*2)%2<1.2))?1:0;
+  const pk=M.sp(t,tTy-0.35,M.MORPH); M.$('capPill').style.transform=`translate(-50%,-50%) scale(${0.8+0.2*pk})`; M.$('capPill').style.opacity=M.clamp((t-tTy+0.35)/0.2);
+  // 2: "Meet" rises, flies through the camera, logo assembles
+  if(t>SC[1].a-0.1&&t<SC[1].b+0.3){
+    M.words(meetSp,t,tMeet-0.08,{step:0.05,style:'rise'});
+    const f=M.flyOut(t,tName-0.25,0.3); const m=M.$('meet'); m.style.transform=`translate(-50%,-50%) scale(${f.s})`; m.style.filter=`blur(${f.blur}px)`; m.style.opacity=f.o;
+    const lk=M.$('lock'); lk.style.opacity=t>tName-0.1?1:0; M.scramble(nameSp,t,tName-0.1,0.8,260);
+    const lg=M.sp(t,tName-0.1,[13,0.7]); M.$('logo').style.transform=`scale(${lg}) rotate(${(1-lg)*-90}deg)`;
+  }
+  // 3/4: dashboard
+  if(t>SC[2].a-0.1&&t<SC[2].b+0.3){
+    const k=M.sp(t,t3,[8,0.8]); M.$('dash').style.transform=M.tilt(42*(1-k),-22*(1-k),0,2200)+` scale(${0.86+0.14*k})`; M.$('dash').style.opacity=M.clamp((t-t3)/0.25);
+    M.cam(M.$('dashWorld'),W,H,camX(t),camY(t),camS(t));
+    const b=M.$('btn'), bwv=bw(t), done=t>tDone-0.05, loading=t>tLoad&&!done;
+    b.style.width=bwv+'px'; b.style.borderRadius='32px'; b.style.background=bbg(t); b.style.transform=`scale(${1-0.06*press(t)})`;
+    const lbl=done?M.icon('check',34,'#fff',3):loading?'Connecting…':'Connect source'; if(b._l!==lbl){b.innerHTML=lbl;b._l=lbl;}
+    b.style.left=(84+(250-bwv)/2)+'px';                      // grow/shrink around a fixed centre
+    M.ripple(t,tDone,3,0.12,1.0,2.4).forEach((g,i)=>{const c=ringEls[i];c.setAttribute('cx',260+84+125);c.setAttribute('cy',150+300+32);c.setAttribute('r',32*g.s);c.setAttribute('opacity',g.o);});
+    const c=cur(t), cz=t<tZoom?1:0; M.$('cursor').style.transform=`translate(${c.x}px,${c.y}px) scale(${1-0.13*press(t)})`; M.$('cursor').style.opacity=cz*M.clamp((t-t3-0.2)/0.2)*(1-M.clamp((t-tZoom+0.3)/0.25));
+    M.stroke(M.$('line'),t,tRep,1.1,M.eio); M.setText(M.$('num'),'$'+M.count(t,tRep,1.1,0,48260)); M.$('num').style.opacity=M.clamp((t-tRep+0.25)/0.2);
+    const cy=M.cycle(CYC,t,tRep+0.2,0.55); const ce=M.$('cyc'); M.setText(ce,cy.word); ce.style.opacity=t<tRep?1:cy.o; ce.style.filter=`blur(${t<tRep?0:cy.blur}px)`; M.gradText(ce,t,14);
+  }
+  // 5
+  if(t>SC[3].a-0.1&&t<SC[3].b+0.3){
+    const hk=M.sp(t,t5-0.2,M.POP); M.$('hub').style.transform=`translate(-50%,-50%) scale(${hk})`;
+    avs.forEach((d,i)=>{const p=M.sp(t,t5+0.25+i*0.12,M.POP), a=i*1.2566+ (t-t5)*0.45, R=300*(0.6+0.4*p); d.style.left=(960+Math.cos(a)*R*1.25-43)+'px'; d.style.top=(540+Math.sin(a)*R-43)+'px'; d.style.transform=`scale(${p})`;});
+    toasts.forEach((d,i)=>{const p=M.sp(t,t5+1.0+i*0.55,M.MORPH); d.style.transform=`translate(${1300+(1-p)*80}px,${180+i*110}px)`; d.style.opacity=M.clamp((t-t5-1.0-i*0.55)/0.15);});
+  }
+  // 6
+  if(t>SC[4].a-0.1){
+    const k=M.sp(t,t6,[12,0.75]); M.$('endLock').style.transform=`translate(-50%,-50%) scale(${0.7+0.3*k})`; M.$('endLock').style.opacity=M.clamp((t-t6)/0.15);
+    const ck=M.sp(t,t6+0.6,M.POP); M.$('cta').style.transform=`translate(-50%,-50%) scale(${ck})`;
+    M.$('url').style.opacity=M.clamp((t-t6-0.9)/0.3);
+  }
+  const ps=M.burst(t,t6+0.6,conf.length,{colors:['#2B4BF0','#6EC6F5','#FF7AB6','#FFD45E'],speed:1300,life:1.6});
+  conf.forEach((d,i)=>{const p=ps[i]; if(!p){d.style.opacity=0;return;} d.style.background=p.c; d.style.opacity=p.o; d.style.transform=`translate(${960+p.x}px,${670+p.y}px) rotate(${p.r}deg) scale(${p.s})`;});
+}});
+</script>

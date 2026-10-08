@@ -1,0 +1,24 @@
+{
+  "name": "code-motion",
+  "displayName": "Code Motion: AI Video Studio",
+  "version": "1.0.0",
+  "description": "Create professional motion-graphics videos entirely in code: promos, launch films, tutorials and docs videos, product demos, explainers, vertical reels, UI loops, logo reveals and 3D scenes, with a natural voiceover and sound effects synced to every move.",
+  "author": {
+    "name": "Shahreyar Shimul",
+    "email": "shahreyar.shimul15@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "motion-graphics",
+    "promo",
+    "tutorial",
+    "explainer",
+    "voiceover",
+    "playwright",
+    "ffmpeg",
+    "animation"
+  ],
+  "homepage": "https://github.com/Shahreyar46/code-motion",
+  "repository": "https://github.com/Shahreyar46/code-motion"
+}

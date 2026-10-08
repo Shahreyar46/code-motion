@@ -1,0 +1,20 @@
+{
+  "voice": {
+    "provider": "auto",
+    "gemini": "Charon",
+    "edge": "en-US-AndrewNeural",
+    "elevenlabs": "pNInz6obpgDQGcFmaJgB",
+    "rate": "-4%",
+    "style": "Read like a calm, confident product-film narrator. Warm, natural, unhurried, with a little smile. Land the last word of each line."
+  },
+  "lead_in": 0.6,
+  "gap": 0.45,
+  "lines": [
+    {"id": "hook",    "text": "What if every frame of your launch video was code?", "pause": 0.55},
+    {"id": "problem", "text": "No timeline. No keyframes. No editor.", "pause": 0.5},
+    {"id": "how",     "text": "You write the story. The agent writes the motion."},
+    {"id": "sync",    "text": "Every move lands on a word, and every sound lands on a move."},
+    {"id": "ship",    "text": "Render it. Check it. Ship it.", "pause": 0.5},
+    {"id": "end",     "text": "Code motion. Video, written in code."}
+  ]
+}

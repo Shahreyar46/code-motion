@@ -1,0 +1,56 @@
+name: release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag must match plugin.json version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VER=$(python3 -c "import json;print(json.load(open('.claude-plugin/plugin.json'))['version'])")
+          echo "tag=$TAG plugin.json=$VER"
+          [ "$TAG" = "$VER" ] || { echo "::error::Tag v$TAG does not match plugin.json version $VER. Use ./release.sh to release."; exit 1; }
+
+      - name: Check manifests and command frontmatter
+        run: |
+          python3 - <<'EOF'
+          import json, glob, re, sys
+          json.load(open('.claude-plugin/plugin.json')); m = json.load(open('.claude-plugin/marketplace.json'))
+          assert any(p['name'] == 'code-motion' for p in m['plugins']), 'marketplace entry missing'
+          bad = []
+          for f in glob.glob('commands/*.md') + glob.glob('skills/*/SKILL.md'):
+              s = open(f, encoding='utf-8').read()
+              fm = re.match(r'^---\n(.*?)\n---\n', s, re.S)
+              if not fm or not re.search(r'^description:', fm.group(1), re.M): bad.append(f)
+          if bad: sys.exit('missing frontmatter/description: ' + ', '.join(bad))
+          print('ok')
+          EOF
+
+      - name: Validate with Claude Code (best effort)
+        continue-on-error: true
+        run: npx -y @anthropic-ai/claude-code plugin validate ./
+
+      - name: Release notes from CHANGELOG
+        run: |
+          python3 - <<'EOF'
+          import os, re
+          ver = os.environ['GITHUB_REF_NAME']
+          txt = open('CHANGELOG.md', encoding='utf-8').read()
+          m = re.search(rf'## {re.escape(ver)} .*?\n(.*?)(?=\n## |\Z)', txt, re.S)
+          body = (m.group(1).strip() if m else 'See CHANGELOG.md') + '\n\n**Update:** `/plugin marketplace update code-motion` (or enable auto-update for the code-motion marketplace in `/plugin`).'
+          open('notes.md', 'w', encoding='utf-8').write(body)
+          EOF
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag

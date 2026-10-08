@@ -1,0 +1,61 @@
+<title>code-motion · Three.js scene template</title>
+<!--
+  Template: 3D scene driven by t (setup with --three). A camera flies along a spline through a particle field
+  toward a glowing core; HTML text/HUD sits on top and uses the normal M helpers.
+  Pure function of t: every object's transform is computed from t; no clocks, no physics state.
+  Headless render uses SwiftShader (CPU WebGL): keep particle counts in the tens of thousands, avoid heavy post-processing.
+  Works without VO (literal times); with --vo, anchor beats to M.word(...) like the other templates.
+-->
+<style>
+  #gl canvas{display:block}
+  .hud{position:absolute;color:#E8ECF5;font-weight:600;letter-spacing:-0.02em}
+  .lbl{font-family:'Geist Mono';font-size:22px;color:#7d86a0;letter-spacing:.08em;text-transform:uppercase}
+</style>
+<div class="fill" id="gl"></div>
+<div class="hud center" id="title" style="font-size:96px;white-space:nowrap">Into the core</div>
+<div class="hud" style="left:80px;bottom:70px"><div class="lbl">depth</div><div class="mono" id="depth" style="font-size:44px">0.00 km</div></div>
+<div class="vignette"></div>
+
+<script type="module">
+import * as THREE from 'three';
+const W=1920,H=1080,T=10;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1); r.setSize(W,H); r.setClearColor(0x05060a,1); M.$('gl').appendChild(r.domElement);
+const scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x05060a,0.018);
+const cam=new THREE.PerspectiveCamera(42,W/H,0.1,400);
+
+// particle field (seeded, built once)
+const N=30000, rnd=M.rand(5), pos=new Float32Array(N*3), col=new Float32Array(N*3);
+const c1=new THREE.Color('#4F7BFF'), c2=new THREE.Color('#9B7CF0'), c3=new THREE.Color('#FF5A1F');
+for(let i=0;i<N;i++){const a=rnd()*Math.PI*2, rad=4+Math.pow(rnd(),0.6)*40, z=-rnd()*160;
+  pos.set([Math.cos(a)*rad,Math.sin(a)*rad*0.6,z],i*3); const c=(rnd()<0.08?c3:c1.clone().lerp(c2,rnd())); col.set([c.r,c.g,c.b],i*3);}
+const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(pos,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3));
+const dotC=document.createElement('canvas'); dotC.width=dotC.height=64; const dx=dotC.getContext('2d'); const dg=dx.createRadialGradient(32,32,0,32,32,32); dg.addColorStop(0,'#fff'); dg.addColorStop(0.4,'rgba(255,255,255,.8)'); dg.addColorStop(1,'rgba(255,255,255,0)'); dx.fillStyle=dg; dx.fillRect(0,0,64,64);
+const pts=new THREE.Points(g,new THREE.PointsMaterial({size:0.22,map:new THREE.CanvasTexture(dotC),vertexColors:true,transparent:true,opacity:0.9,depthWrite:false,blending:THREE.AdditiveBlending}));
+scene.add(pts);
+
+// glowing core: sphere + additive halo sprite
+const core=new THREE.Mesh(new THREE.IcosahedronGeometry(3,3),new THREE.MeshBasicMaterial({color:'#FF5A1F',wireframe:true,transparent:true,opacity:0.85}));
+core.position.z=-150; scene.add(core);
+const cv=document.createElement('canvas'); cv.width=cv.height=256; const cx=cv.getContext('2d'); const gr=cx.createRadialGradient(128,128,0,128,128,128);
+gr.addColorStop(0,'rgba(255,140,80,1)'); gr.addColorStop(0.3,'rgba(255,90,31,0.45)'); gr.addColorStop(1,'rgba(255,90,31,0)'); cx.fillStyle=gr; cx.fillRect(0,0,256,256);
+const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+halo.scale.set(26,26,1); halo.position.copy(core.position); scene.add(halo);
+
+// camera spline
+const path=new THREE.CatmullRomCurve3([new THREE.Vector3(0,6,20),new THREE.Vector3(6,2,-30),new THREE.Vector3(-4,-1,-80),new THREE.Vector3(1,0.5,-128),new THREE.Vector3(0,0,-139)]);
+const title=M.$('title'), tsp=M.split(title);
+M.cue(0.2,'riser',{g:0.25,d:1.0}); M.cue(0.5,'whoosh',{g:0.4,d:1.2}); M.cue(T-2.4,'suck',{g:0.5,d:0.7}); M.cue(T-2.4,'impact',{g:0.7}); M.cue(T-2.3,'shimmer',{g:0.3});
+
+M.video({W,H,T,bg:'#05060a',draw:(t)=>{
+  const u=M.eio(t/(T-2.2)); const p=path.getPointAt(Math.min(1,u)), look=path.getPointAt(Math.min(1,u+0.04));
+  cam.position.copy(p); cam.lookAt(look.x,look.y,look.z-2); cam.rotation.z+=0.12*Math.sin(t*0.4);
+  core.rotation.set(t*0.3,t*0.45,0); const pulse=1+0.08*Math.sin(t*5)*M.win(t,T-2.6,T-2.2);
+  core.scale.setScalar(pulse*(1+0.6*M.sp(t,T-2.4,M.POP))); halo.material.opacity=0.6+0.4*M.sp(t,T-2.4,M.SOFT);
+  pts.rotation.z=t*0.05;
+  r.render(scene,cam);
+  // HUD
+  M.words(tsp,t,0.6,{step:0.08,style:'blur'}); const f=M.flyOut(t,2.6,0.4); title.style.transform=`translate(-50%,-50%) scale(${f.s})`; title.style.filter=`blur(${f.blur}px)`; title.style.opacity=f.o;
+  M.setText(M.$('depth'),(u*6371).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',')+' km');
+}});
+</script>

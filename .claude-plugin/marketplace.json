@@ -1,0 +1,14 @@
+{
+  "name": "code-motion",
+  "owner": {
+    "name": "Shahreyar Shimul"
+  },
+  "description": "Code Motion: an AI video studio plugin for Claude Code. Promos, tutorials, demos, explainers, reels, UI loops, logo reveals and 3D scenes rendered from code with voiceover and sound design.",
+  "plugins": [
+    {
+      "name": "code-motion",
+      "source": "./",
+      "description": "AI video studio: promos, tutorials, demos, explainers, reels and more, rendered from code with voiceover and sound design."
+    }
+  ]
+}
