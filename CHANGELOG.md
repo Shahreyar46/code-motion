@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.2.0 (2026-10-09)
+- Engine: M.along flies chips/files along a drawn path into a target (form to folder, DB to storage)
+- M.arc curved moves with adjustable bend
+- M.xblur directional motion blur
+- M.flash white-flash transitions
+- case-study logo-hold contradiction fixed
+
 ## v1.1.4 (2026-10-09)
 - Examples and case studies now use generic names only
 
